@@ -1,5 +1,5 @@
 {
-	"name": "DelimitedText3",
+	"name": "DelimitedText2",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LkDevArif",
