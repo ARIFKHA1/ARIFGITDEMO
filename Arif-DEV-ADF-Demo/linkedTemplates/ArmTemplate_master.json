@@ -7,9 +7,13 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "Arif-DEV-ADF-Demo"
 		},
-		"LkDevArif_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'LkDevArif'"
+		"KVdevLK_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://Arif-KV-Dev-Demo.vault.azure.net/"
+		},
+		"LkDevArif_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "DevStoragekey"
 		},
 		"containerUri": {
 			"type": "string",
@@ -38,8 +42,11 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"LkDevArif_connectionString": {
-						"value": "[parameters('LkDevArif_connectionString')]"
+					"KVdevLK_properties_typeProperties_baseUrl": {
+						"value": "[parameters('KVdevLK_properties_typeProperties_baseUrl')]"
+					},
+					"LkDevArif_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('LkDevArif_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},

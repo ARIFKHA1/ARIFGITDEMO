@@ -7,9 +7,13 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "Arif-DEV-ADF-Demo"
 		},
-		"LkDevArif_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'LkDevArif'"
+		"KVdevLK_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://Arif-KV-Dev-Demo.vault.azure.net/"
+		},
+		"LkDevArif_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "DevStoragekey"
 		}
 	},
 	"variables": {
@@ -41,6 +45,19 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/KVdevLK')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('KVdevLK_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/LkDevArif')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -48,13 +65,22 @@
 				"annotations": [],
 				"type": "AzureBlobStorage",
 				"typeProperties": {
-					"connectionString": "[parameters('LkDevArif_connectionString')]"
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "KVdevLK",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('LkDevArif_properties_typeProperties_connectionString_secretName')]"
+					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/KVdevLK')]"
+			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"name": "[concat(parameters('factoryName'), '/DelimitedText2')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -66,14 +92,28 @@
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
-						"type": "AzureBlobStorageLocation"
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Employee Data.csv",
+						"container": "testfolder"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
-					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
-				"schema": []
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LkDevArif')]"

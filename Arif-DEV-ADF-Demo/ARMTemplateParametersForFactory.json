@@ -5,8 +5,11 @@
 		"factoryName": {
 			"value": "Arif-DEV-ADF-Demo"
 		},
-		"LkDevArif_connectionString": {
-			"value": ""
+		"KVdevLK_properties_typeProperties_baseUrl": {
+			"value": "https://Arif-KV-Dev-Demo.vault.azure.net/"
+		},
+		"LkDevArif_properties_typeProperties_connectionString_secretName": {
+			"value": "DevStoragekey"
 		}
 	}
 }
